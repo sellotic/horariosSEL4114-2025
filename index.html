@@ -150,11 +150,45 @@
         // --- FUNCIONES ---
 
         /**
+         * Función para ordenar los horarios de Lunes a Viernes y por período.
+         */
+        function sortHorario(a, b) {
+            const dayOrder = { 'lunes': 0, 'martes': 1, 'miércoles': 2, 'jueves': 3, 'viernes': 4 };
+            const getDayIndex = (horario) => {
+                const lowerHorario = horario.toLowerCase();
+                for (const day in dayOrder) {
+                    if (lowerHorario.startsWith(day)) return dayOrder[day];
+                }
+                return 5; // Fallback para días no encontrados
+            };
+            const getStartPeriod = (horario) => {
+                const match = horario.match(/\d+/);
+                return match ? parseInt(match[0], 10) : 99;
+            };
+
+            const dayIndexA = getDayIndex(a.horario);
+            const dayIndexB = getDayIndex(b.horario);
+
+            if (dayIndexA !== dayIndexB) return dayIndexA - dayIndexB;
+
+            const startPeriodA = getStartPeriod(a.horario);
+            const startPeriodB = getStartPeriod(b.horario);
+            return startPeriodA - startPeriodB;
+        }
+
+        /**
          * Rellena la lista de sugerencias (<datalist>) con opciones únicas para la categoría seleccionada.
          */
         function populateDatalist(filter) {
             searchOptions.innerHTML = '';
-            const uniqueValues = [...new Set(scheduleData.map(item => item[filter]))].sort();
+            let uniqueValues = [...new Set(scheduleData.map(item => item[filter]))];
+            
+            if (filter === 'horario') {
+                uniqueValues.sort((a, b) => sortHorario({ horario: a }, { horario: b }));
+            } else {
+                uniqueValues.sort();
+            }
+
             uniqueValues.forEach(value => {
                 const option = document.createElement('option');
                 option.value = value;
@@ -212,7 +246,7 @@
         }
 
         /**
-         * Filtra los datos basados en el término de búsqueda y el filtro activo.
+         * Filtra y ordena los datos basados en el término de búsqueda y el filtro activo.
          */
         function filterData() {
             const searchTerm = searchInput.value.toLowerCase().trim();
@@ -220,9 +254,15 @@
                 renderResults([]); 
                 return;
             }
-            const filteredData = scheduleData.filter(item => {
+            let filteredData = scheduleData.filter(item => {
                 return String(item[activeFilter]).toLowerCase().includes(searchTerm);
             });
+
+            // Ordena los resultados si el filtro es por horario
+            if (activeFilter === 'horario') {
+                filteredData.sort(sortHorario);
+            }
+
             renderResults(filteredData);
         }
 
