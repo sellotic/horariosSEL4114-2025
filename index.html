@@ -35,40 +35,6 @@
         .ring-upla-blue:focus {
             --tw-ring-color: var(--upla-blue);
         }
-        /* Estilos para el Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-        }
-        .modal-content {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--upla-blue);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -128,20 +94,6 @@
         </footer>
     </div>
 
-    <!-- Modal para Gemini -->
-    <div id="gemini-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h2 class="text-xl font-bold mb-4 text-gray-800">Ohaika peteĩ iméil mbo'ehárape ✨</h2>
-            <div id="modal-body">
-                <!-- Contenido dinámico del modal -->
-            </div>
-            <div class="mt-6 flex justify-end space-x-3">
-                <button id="close-modal-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-
     <script>
         // --- DATOS DE LOS HORARIOS (CON NÚMERO DE ESTUDIANTES Y CORREO) ---
         const scheduleData = [
@@ -184,10 +136,6 @@
         const filterButtonsContainer = document.getElementById('filter-buttons');
         const noResultsDiv = document.getElementById('no-results');
         const searchOptions = document.getElementById('search-options');
-        const geminiModal = document.getElementById('gemini-modal');
-        const modalBody = document.getElementById('modal-body');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
 
         let activeFilter = 'docente';
 
@@ -262,15 +210,8 @@
                         <div class="border-t mt-2 pt-2">
                              <p class="text-sm text-gray-600 font-semibold">Estudiantes: ${item.estudiantes}</p>
                         </div>
-                        <div class="border-t mt-4 pt-3 text-center">
-                            <button class="gemini-btn w-full px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition text-sm font-semibold">Ohaika peteĩ iméil ✨</button>
-                        </div>
                     `;
                     resultsGrid.appendChild(card);
-                    // Añadir event listener al botón de Gemini
-                    card.querySelector('.gemini-btn').addEventListener('click', () => {
-                        openGeminiModal(item);
-                    });
                 });
             } else {
                 if (isSearching) {
@@ -293,80 +234,6 @@
             }
             renderResults(filteredData);
         }
-
-        // --- Funciones del Modal y Gemini ---
-
-        function openGeminiModal(item) {
-            geminiModal.classList.remove('hidden');
-            modalBody.innerHTML = `
-                <p class="mb-2 text-sm text-gray-600">Ehai nde réra eipurúvo Gemini ombosako'i hag̃ua peteĩ iméil mbo'ehárape g̃uarã.</p>
-                <input type="text" id="student-name-input" placeholder="Nde réra ha ne terajoapy" class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4">
-                <button id="generate-email-btn" class="w-full px-4 py-2 bg-upla-blue text-white rounded-lg hover:bg-blue-700 transition">General</button>
-            `;
-
-            document.getElementById('generate-email-btn').addEventListener('click', () => {
-                const studentName = document.getElementById('student-name-input').value;
-                if (studentName.trim() === '') {
-                    alert("Por favor, ingresa tu nombre.");
-                    return;
-                }
-                generateEmail(item, studentName);
-            });
-        }
-
-        async function generateEmail(item, studentName) {
-            modalBody.innerHTML = '<div class="loader"></div> <p class="text-center text-gray-600">Ojejapo iméil...</p>';
-            
-            const apiKey = ''; // La clave será proporcionada por el entorno de ejecución
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-            const systemPrompt = "Eres un asistente servicial para estudiantes universitarios en Chile. Tu tarea es redactar un correo electrónico educado y formal en español de un estudiante a un profesor. El estudiante quiere consultar sobre la disponibilidad de cupos para unirse a la sección del profesor. Utiliza la sección del curso, el nombre del profesor y el nombre del estudiante proporcionados para personalizar el correo electrónico. El correo electrónico debe ser conciso, profesional y amigable.";
-            const userQuery = `Genera un correo electrónico para el profesor ${item.docente} sobre la sección ${item.seccion}. Mi nombre es ${studentName}.`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                const emailText = result.candidates[0].content.parts[0].text;
-
-                modalBody.innerHTML = `
-                    <textarea id="email-output" class="w-full h-48 p-2 border border-gray-300 rounded-lg">${emailText}</textarea>
-                    <button id="copy-email-btn" class="w-full mt-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Copiar</button>
-                `;
-
-                document.getElementById('copy-email-btn').addEventListener('click', () => {
-                    const emailOutput = document.getElementById('email-output');
-                    emailOutput.select();
-                    document.execCommand('copy');
-                    alert('¡Iméil ojekopia!');
-                });
-
-            } catch (error) {
-                console.error("Error al llamar a la API de Gemini:", error);
-                modalBody.innerHTML = `<p class="text-red-500 text-center">Oiko peteĩ apañuãi ojejapo jave iméil. Eha'ã jey upéi.</p>`;
-            }
-        }
-
-        closeModalBtn.addEventListener('click', () => geminiModal.classList.add('hidden'));
-        geminiModal.addEventListener('click', (e) => {
-            if (e.target === geminiModal) {
-                geminiModal.classList.add('hidden');
-            }
-        });
-
 
         // --- EVENT LISTENERS ---
         searchInput.addEventListener('keyup', filterData);
