@@ -58,7 +58,7 @@
             <!-- Contenedor de filtros y búsqueda -->
             <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md mb-6">
                 <div class="mb-4">
-                    <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">1. Selecciona una categoría:</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">1. Selecciona una categoría:</label>
                     <div id="filter-buttons" class="flex flex-wrap gap-2">
                         <button data-filter="docente" class="filter-btn active text-sm sm:text-base px-3 py-2 sm:px-4 rounded-lg bg-gray-200 transition-all duration-200">Docente</button>
                         <button data-filter="carrera" class="filter-btn text-sm sm:text-base px-3 py-2 sm:px-4 rounded-lg bg-gray-200 transition-all duration-200">Carrera</button>
@@ -67,8 +67,7 @@
                         <button data-filter="laboratorio" class="filter-btn text-sm sm:text-base px-3 py-2 sm:px-4 rounded-lg bg-gray-200 transition-all duration-200">Laboratorio</button>
                     </div>
                 </div>
-                 <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">2. Presiona la flecha para desplegar las opciones.</label>
-                <div class="relative">
+                <div class="relative mt-4">
                     <input type="text" id="search-input" list="search-options" placeholder="Buscar por Docente..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-upla-blue focus:border-upla-blue transition">
                     <datalist id="search-options"></datalist>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -97,37 +96,37 @@
     <script>
         // --- DATOS DE LOS HORARIOS (CON NÚMERO DE ESTUDIANTES Y CORREO) ---
         const scheduleData = [
-            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-2", estudiantes: 32, horario: "LUNES 1 y 2: 8:00-10:45", laboratorio: "CC5", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: false },
-            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-3", estudiantes: 28, horario: "LUNES 1 y 2: 8:00-10:45", laboratorio: "CC6", docente: "Antonio Marín", email: "amarin@upla.cl", fusionado: false },
-            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-4", estudiantes: 32, horario: "LUNES 3 Y 4: 11:00-13:45", laboratorio: "CC5", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: false },
-            { facultad: "Cs. Sociales", carrera: "Periodismo", seccion: "SEL 4114-5", estudiantes: 33, horario: "VIERNES 1 Y 2: 8:00-10:45", laboratorio: "CS102", docente: "Humberto Zapata", email: "humberto.zapata@upla.cl", fusionado: false },
-            { facultad: "Humanidades", carrera: "Pedagogía Castellano Valpo.", seccion: "SEL 4114-6", estudiantes: 33, horario: "MARTES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "José Miranda", email: "jose.miranda@upla.cl", fusionado: false },
-            { facultad: "Humanidades", carrera: "Pedagogía Inglés Valpo.", seccion: "SEL 4114-7", estudiantes: 40, horario: "MARTES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Marcela Vera", email: "marcela.vera@upla.cl", fusionado: true },
-            { facultad: "Humanidades", carrera: "Pedagogía Castellano San Felipe", seccion: "SEL 4114-21", estudiantes: 27, horario: "Miércoles 2 y 3: 9:30-12:15", laboratorio: "C302", docente: "Daniela Salinas", email: "daniela.salinas@upla.cl", fusionado: true },
-            { facultad: "Humanidades", carrera: "Pedagogía Inglés San Felipe", seccion: "SEL 4114-21", estudiantes: 27, horario: "Miércoles 2 y 3: 9:30-12:15", laboratorio: "C302", docente: "Daniela Salinas", email: "daniela.salinas@upla.cl", fusionado: true },
-            { facultad: "Cs. Salud", carrera: "Nutrición y dietética", seccion: "SEL 4114-8", estudiantes: 40, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CC6", docente: "Francisca Valdés", email: "francisca.valdes@upla.cl", fusionado: false },
-            { facultad: "Cs. Salud", carrera: "Nutrición y dietética", seccion: "SEL 4114-9", estudiantes: 38, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CS102", docente: "Marcela Vera", email: "marcela.vera@upla.cl", fusionado: true },
-            { facultad: "Cs. Salud", carrera: "Fonoaudiología", seccion: "SEL 4114-9", estudiantes: 38, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CS102", docente: "Marcela Vera", email: "marcela.vera@upla.cl", fusionado: true },
-            { facultad: "Cs. Salud", carrera: "Terapia ocupacional", seccion: "SEL 4114-10", estudiantes: 34, horario: "MIERCOLES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "José Miranda", email: "jose.miranda@upla.cl", fusionado: false },
-            { facultad: "Cs. Salud", carrera: "Terapia ocupacional", seccion: "SEL 4114-11", estudiantes: 15, horario: "VIERNES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Diego Cabrera Pinilla", email: "diego.cabrera@upla.cl", fusionado: false },
-            { facultad: "Cs. Salud", carrera: "Kinesiología", seccion: "SEL 4114-12", estudiantes: 38, horario: "MIÉRCOLES 1 Y 2: 8:00-10:45", laboratorio: "CS102", docente: "Antonio Marín", email: "amarin@upla.cl", fusionado: false },
-            { facultad: "Artes", carrera: "Pedagogía Educación Musical", seccion: "SEL 4114-13", estudiantes: 25, horario: "MARTES 5 y 6: 14:00-16:45", laboratorio: "CC5", docente: "Marcela Vera", email: "marcela.vera@upla.cl", fusionado: false },
-            { facultad: "Ingeniería", carrera: "Ingeniería comercial", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: true },
-            { facultad: "Ingeniería", carrera: "Ingeniería civil ambiental", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: true },
-            { facultad: "Ingeniería", carrera: "Ingeniería civil industrial", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: true },
-            { facultad: "Cs. Nat. y Exac.", carrera: "Ped Biología y Cs", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl", fusionado: true },
-            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Química y Cs", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl", fusionado: true },
-            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Matemática", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl", fusionado: true },
-            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Física", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl", fusionado: true },
-            { facultad: "Cs. Act. Física", carrera: "Pedagogía en Educación Física damas", seccion: "SEL 4114-16", estudiantes: 27, horario: "JUEVES 1 y 2: 8:00-10:45", laboratorio: "B-401", docente: "Marcela Vera", email: "marcela.vera@upla.cl", fusionado: false },
-            { facultad: "Cs. Act. Física", carrera: "Pedagogía en Educación Física varones", seccion: "SEL 4114-17", estudiantes: 47, horario: "JUEVES 3 Y 4: 11:00-13:45", laboratorio: "CC6", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl", fusionado: false },
-            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial Valpo.", seccion: "SEL 4114-18", estudiantes: 39, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "C102", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl", fusionado: false },
-            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial San Felipe", seccion: "SEL 4114-22", estudiantes: 26, horario: "Viernes 2 y 3: 9:30-12:15", laboratorio: "C301", docente: "Germán Flores", email: "gflores@upla.cl", fusionado: false },
-            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial San Felipe", seccion: "SEL 4114-24", estudiantes: 25, horario: "Viernes 4 y 5: 14:00-16:45", laboratorio: "C302", docente: "Germán Flores", email: "gflores@upla.cl", fusionado: false },
-            { facultad: "Educación", carrera: "Pedagogía Educación Básica Valpo.", seccion: "SEL 4114-20", estudiantes: 28, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "Fabián González", email: "fabian.gonzalez@upla.cl", fusionado: true },
-            { facultad: "Humanidades", carrera: "Pedagogía Historia y Geografía", seccion: "SEL 4114-20", estudiantes: 10, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "Fabián González", email: "fabian.gonzalez@upla.cl", fusionado: true },
-            { facultad: "Educación", carrera: "Educación Parvularia Valpo.", seccion: "SEL 4114-21", estudiantes: 41, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Antonio Marín", email: "amarin@upla.cl", fusionado: true },
-            { facultad: "Humanidades", carrera: "Pedagogía Filosofía", seccion: "SEL 4114-21", estudiantes: 41, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Antonio Marín", email: "amarin@upla.cl", fusionado: true }
+            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-2", estudiantes: 32, horario: "LUNES 1 y 2: 8:00-10:45", laboratorio: "CC5", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-3", estudiantes: 28, horario: "LUNES 1 y 2: 8:00-10:45", laboratorio: "CC6", docente: "Antonio Marín", email: "amarin@upla.cl" },
+            { facultad: "Cs. Sociales", carrera: "Psicología", seccion: "SEL 4114-4", estudiantes: 32, horario: "LUNES 3 Y 4: 11:00-13:45", laboratorio: "CC5", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Cs. Sociales", carrera: "Periodismo", seccion: "SEL 4114-5", estudiantes: 33, horario: "VIERNES 1 Y 2: 8:00-10:45", laboratorio: "CS102", docente: "Humberto Zapata", email: "humberto.zapata@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Castellano Valpo.", seccion: "SEL 4114-6", estudiantes: 33, horario: "MARTES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "José Miranda", email: "jose.miranda@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Inglés Valpo.", seccion: "SEL 4114-7", estudiantes: 40, horario: "MARTES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Marcela Vera", email: "marcela.vera@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Castellano San Felipe", seccion: "SEL 4114-21", estudiantes: 27, horario: "Miércoles 2 y 3: 9:30-12:15", laboratorio: "C302", docente: "Daniela Salinas", email: "daniela.salinas@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Inglés San Felipe", seccion: "SEL 4114-21", estudiantes: 27, horario: "Miércoles 2 y 3: 9:30-12:15", laboratorio: "C302", docente: "Daniela Salinas", email: "daniela.salinas@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Nutrición y dietética", seccion: "SEL 4114-8", estudiantes: 40, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CC6", docente: "Francisca Valdés", email: "francisca.valdes@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Nutrición y dietética", seccion: "SEL 4114-9", estudiantes: 38, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CS102", docente: "Marcela Vera", email: "marcela.vera@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Fonoaudiología", seccion: "SEL 4114-9", estudiantes: 38, horario: "MARTES 3 Y 4: 11:00-13:45", laboratorio: "CS102", docente: "Marcela Vera", email: "marcela.vera@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Terapia ocupacional", seccion: "SEL 4114-10", estudiantes: 34, horario: "MIERCOLES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "José Miranda", email: "jose.miranda@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Terapia ocupacional", seccion: "SEL 4114-11", estudiantes: 15, horario: "VIERNES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Diego Cabrera Pinilla", email: "diego.cabrera@upla.cl" },
+            { facultad: "Cs. Salud", carrera: "Kinesiología", seccion: "SEL 4114-12", estudiantes: 38, horario: "MIÉRCOLES 1 Y 2: 8:00-10:45", laboratorio: "CS102", docente: "Antonio Marín", email: "amarin@upla.cl" },
+            { facultad: "Artes", carrera: "Pedagogía Educación Musical", seccion: "SEL 4114-13", estudiantes: 25, horario: "MARTES 5 y 6: 14:00-16:45", laboratorio: "CC5", docente: "Marcela Vera", email: "marcela.vera@upla.cl" },
+            { facultad: "Ingeniería", carrera: "Ingeniería comercial", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Ingeniería", carrera: "Ingeniería civil ambiental", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Ingeniería", carrera: "Ingeniería civil industrial", seccion: "SEL 4114-14", estudiantes: 17, horario: "MIÉRCOLES 1 y 2: 8:00-10:45", laboratorio: "CS104", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Cs. Nat. y Exac.", carrera: "Ped Biología y Cs", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl" },
+            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Química y Cs", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl" },
+            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Matemática", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl" },
+            { facultad: "Cs. Nat. y Exac.", carrera: "Ped en Física", seccion: "SEL 4114-15", estudiantes: 18, horario: "LUNES 1 Y 2: 8:00-10:45", laboratorio: "CS104", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl" },
+            { facultad: "Cs. Act. Física", carrera: "Pedagogía en Educación Física damas", seccion: "SEL 4114-16", estudiantes: 27, horario: "JUEVES 1 y 2: 8:00-10:45", laboratorio: "B-401", docente: "Marcela Vera", email: "marcela.vera@upla.cl" },
+            { facultad: "Cs. Act. Física", carrera: "Pedagogía en Educación Física varones", seccion: "SEL 4114-17", estudiantes: 47, horario: "JUEVES 3 Y 4: 11:00-13:45", laboratorio: "CC6", docente: "Melissa Vargas", email: "melissa.vargas@upla.cl" },
+            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial Valpo.", seccion: "SEL 4114-18", estudiantes: 39, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "C102", docente: "Macarena Rojas", email: "macarena.rojas@upla.cl" },
+            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial San Felipe", seccion: "SEL 4114-22", estudiantes: 26, horario: "Viernes 2 y 3: 9:30-12:15", laboratorio: "C301", docente: "Germán Flores", email: "gflores@upla.cl" },
+            { facultad: "Educación", carrera: "Pedagogía Ed.Diferencial San Felipe", seccion: "SEL 4114-24", estudiantes: 25, horario: "Viernes 4 y 5: 14:00-16:45", laboratorio: "C302", docente: "Germán Flores", email: "gflores@upla.cl" },
+            { facultad: "Educación", carrera: "Pedagogía Educación Básica Valpo.", seccion: "SEL 4114-20", estudiantes: 28, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "Fabián González", email: "fabian.gonzalez@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Historia y Geografía", seccion: "SEL 4114-20", estudiantes: 10, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC6", docente: "Fabián González", email: "fabian.gonzalez@upla.cl" },
+            { facultad: "Educación", carrera: "Educación Parvularia Valpo.", seccion: "SEL 4114-21", estudiantes: 41, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Antonio Marín", email: "amarin@upla.cl" },
+            { facultad: "Humanidades", carrera: "Pedagogía Filosofía", seccion: "SEL 4114-21", estudiantes: 41, horario: "JUEVES 1 Y 2: 8:00-10:45", laboratorio: "CC5", docente: "Antonio Marín", email: "amarin@upla.cl" }
         ];
 
         // --- REFERENCIAS A ELEMENTOS DEL DOM ---
@@ -188,7 +187,6 @@
 
             if (data.length > 0) {
                 data.forEach(item => {
-                    const fusionadoBadge = item.fusionado ? `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">OK</span>` : '';
                     const emailLink = item.email ? `<p class="flex items-center text-sm truncate"><a href="mailto:${item.email}" class="text-upla-blue hover:underline flex items-center">${mailIcon} ${item.email}</a></p>` : '';
                     const card = document.createElement('div');
                     card.className = 'bg-white p-4 rounded-lg shadow flex flex-col';
@@ -198,7 +196,6 @@
                                 <p class="text-upla-blue uppercase text-sm">${item.carrera}</p>
                                 <p class="font-bold text-gray-800">${item.seccion}</p>
                             </div>
-                            ${fusionadoBadge}
                         </div>
                         <div class="border-t my-2"></div>
                         <div class="space-y-2 text-gray-700 flex-grow">
